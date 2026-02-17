@@ -33,12 +33,12 @@ public class FileTransferSftpImpl implements FileTransferService {
                 try {
                     sftpClient.get(
                             dto.getOriginPath(), new InMemoryDestinationFileResource(dto.getDestinationResource()));
-                    log.info("Archivo descargado correctamente desde {}", dto.getOriginPath());
+                    log.info("File successfully downloaded from {}", dto.getOriginPath());
 
                 } catch (SFTPException e) {
                     if (e.getMessage().contains(NO_SUCH_FILE) || e.getMessage().contains(NO_SUCH_DIRECTORY)) {
-                        log.warn("Archivo {} no encontrado en el servidor SFTP", dto.getOriginPath());
-                        throw new FileNotFoundException("Archivo no encontrado: " + dto.getOriginPath());
+                        log.warn("File {} not found on the SFTP server", dto.getOriginPath());
+                        throw new FileNotFoundException("File not found: " + dto.getOriginPath());
                     } else {
                         throw e;
                     }
@@ -56,12 +56,12 @@ public class FileTransferSftpImpl implements FileTransferService {
                 try {
                     sftpClient.put(
                             new InMemorySourceFileResource(dto.getDestinationResource()), dto.getDestinationPath());
-                    log.info("Archivo subido correctamente a {}", dto.getDestinationPath());
+                    log.info("File successfully uploaded to {}", dto.getDestinationPath());
 
                 } catch (SFTPException e) {
                     if (e.getMessage().contains(NO_SUCH_FILE) || e.getMessage().contains(NO_SUCH_DIRECTORY)) {
-                        log.warn("Error al subir el archivo {} al servidor SFTP", dto.getDestinationPath());
-                        throw new FileNotFoundException("Error al subir archivo: " + dto.getDestinationPath());
+                        log.warn("Error uploading file {} to the SFTP server", dto.getDestinationPath());
+                        throw new FileNotFoundException("Error uploading file: " + dto.getDestinationPath());
                     } else {
                         throw e;
                     }
@@ -91,8 +91,8 @@ public class FileTransferSftpImpl implements FileTransferService {
                         .toList();
             } catch (SFTPException e) {
                 if (e.getMessage().contains(NO_SUCH_FILE) || e.getMessage().contains(NO_SUCH_DIRECTORY)) {
-                    log.warn("No se encontraron archivos en el servidor SFTP");
-                    throw new FileNotFoundException("No se encontraron archivos");
+                    log.warn("No files found on the SFTP server");
+                    throw new FileNotFoundException("No files found");
                 } else {
                     throw e;
                 }
