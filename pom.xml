@@ -108,4 +108,50 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>https://repo1.maven.org/maven2</url>
+                </repository>
+                <repository>
+                    <id>github</id>
+                    <url>https://maven.pkg.github.com/Zener-Soft-Consulting/maetd-sftp-client</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Zener Consulting Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/Zener-Soft-Consulting/maetd-sftp-client</url>
+                </repository>
+            </distributionManagement>
+
+        </profile>
+
+        <profile>
+            <id>pre</id>
+            <distributionManagement>
+                <repository>
+                    <id>nexus-releases</id>
+                    <url>https://nexus-devsecops-test.apps.ocp2.tesoro.es/repository/maven-releases</url>
+                </repository>
+                <snapshotRepository>
+                    <id>nexus-snapshots</id>
+                    <url>https://nexus-devsecops-test.apps.ocp2.tesoro.es/repository/maven-snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+
+        </profile>
+    </profiles>
+
 </project>
