@@ -1,0 +1,23 @@
+# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+name: Build and Publish Library
+
+on:
+  release:
+    types: [created]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [ opened, reopened, review_requested, synchronize ]
+
+jobs:
+  call-workflow-passing-data:
+    uses: Zener-Soft-Consulting/zener-actions-workflows/.github/workflows/maetd-library-base-workflow.yml@main
+    secrets:
+      mavenUser: ${{ vars.ZENER_ACTIONS_MAVEN_USERNAME }}
+      mavenPassword: ${{ secrets.ZENER_ACTIONS_MAVEN_PASSWORD }}
+      sonarUrl: ${{ secrets.SONAR_HOST_URL }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
+      sonarProjectName: maetd-sftp-client
+      sonarProjectKey: Zener-Soft-Consulting_maetd-sftp-client_5a7765ac-536b-48a5-a040-b95d5d0e1cfb
