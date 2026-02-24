@@ -8,6 +8,7 @@ import es.maetd.marketcreators.sftp.client.service.dto.output.FileDTO;
 import es.maetd.marketcreators.sftp.client.sources.InMemoryDestinationFileResource;
 import es.maetd.marketcreators.sftp.client.sources.InMemorySourceFileResource;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +94,23 @@ public class FileTransferSftpImpl implements FileTransferService {
                 if (e.getMessage().contains(NO_SUCH_FILE) || e.getMessage().contains(NO_SUCH_DIRECTORY)) {
                     log.warn("No files found on the SFTP server");
                     throw new FileNotFoundException("No files found");
+                } else {
+                    throw e;
+                }
+            }
+        }
+    }
+
+    public void remove(FileTransferCommonDTO dto, String remoteDirectory) throws IOException {
+        try (SSHClient sshClient = new SSHClient()) {
+            setUpSshClient(sshClient, dto);
+
+            try (SFTPClient sftpClient = sshClient.newSFTPClient()) {
+                sftpClient.rm(remoteDirectory);
+            } catch (SFTPException e) {
+                if (e.getMessage().contains(NO_SUCH_FILE) || e.getMessage().contains(NO_SUCH_DIRECTORY)) {
+                    log.warn("No file found on the SFTP server");
+                    throw new FileNotFoundException("No file found");
                 } else {
                     throw e;
                 }
